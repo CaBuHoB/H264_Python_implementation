@@ -25,7 +25,7 @@ y_bypass = np.array([0, 1, 2, 1, 0, 0, 1, 2, 3, 4, 3, 2, 1, 0, 0, 1,
                      7, 6, 5, 4, 3, 4, 5, 6, 7, 7, 6, 5, 6, 7, 7])
 
 
-# @jit(nopython=True, cache=True, parallel=True)
+@jit(nopython=True, cache=True)
 def add_remove_zero_rows_columns(frame, real_H, real_W, add=True):
     if add:
         H_ = real_H if real_H % N == 0 else np.ceil(real_H / N) * N
@@ -43,7 +43,7 @@ def add_remove_zero_rows_columns(frame, real_H, real_W, add=True):
     return modified_frame
 
 
-# @jit(nopython=True, cache=True, parallel=True)
+@jit(nopython=True, cache=True)
 def DCT(frame):
     modified_frame = frame 
     dct_frame = np.zeros(modified_frame.shape, dtype=np.int64)
@@ -66,7 +66,7 @@ def DCT(frame):
     return dct_frame
 
 
-# @jit(nopython=True, cache=True, parallel=True)
+@jit(nopython=True, cache=True)
 def inverse_DCT(frame, H, W):
     inverse_DCT_frame = np.zeros((len(frame), len(frame[0])), dtype=np.int64)
     for y in np.arange(0, len(frame), 8):
@@ -88,7 +88,7 @@ def inverse_DCT(frame, H, W):
     return inverse_DCT_frame
 
 
-# @jit(nopython=True, cache=True, parallel=True)
+@jit(nopython=True, cache=True)
 def Q(frame, R_for_Q):
     Q_luma = np.zeros(shape=(N, N), dtype=np.int64)
     for j in range(N):
@@ -105,7 +105,7 @@ def Q(frame, R_for_Q):
     return modified_frame
 
 
-# @jit(nopython=True, cache=True, parallel=True)
+@jit(nopython=True, cache=True)
 def inverse_Q(frame, R_for_Q):
     Q_luma = np.zeros(shape=(N, N), dtype=np.int64)
     for j in range(N):
@@ -122,7 +122,7 @@ def inverse_Q(frame, R_for_Q):
     return modified_frame
 
 
-# @jit(nopython=True, cache=True, parallel=True)
+@jit(nopython=True, cache=True)
 def entropy(vector: np.ndarray):
     max_num = np.max(np.array([vector.max(), np.abs(vector.min())])) + 1
     p = np.zeros(int(max_num) * 2, dtype=np.int64)
@@ -139,7 +139,7 @@ def entropy(vector: np.ndarray):
     return entropy_num
 
 
-# @jit(nopython=True, cache=True, parallel=True)
+@jit(nopython=True, cache=True)
 def get_num_bits_for_encoding(matrix):
     H = round(matrix.shape[0] / 8)
     W = round(matrix.shape[1] / 8)
@@ -233,7 +233,7 @@ def get_num_bits_for_encoding(matrix):
     return all_size
 
 
-# @jit(nopython=True, cache=True, parallel=True)
+@jit(nopython=True, cache=True)
 def PSNR(signal1, signal2):
     numerator = len(signal1) * len(signal1[0]) * (2 ** 8 - 1) ** 2
     denominator = 0
@@ -244,7 +244,7 @@ def PSNR(signal1, signal2):
     return 10 * np.log10(numerator / denominator)
 
 
-# @jit(nopython=True, cache=True, parallel=True)
+@jit(nopython=True, cache=True)
 def form_frame_on_ME_vectors(base, H, W, Hb, Wb, vectors):
     new_frame = np.zeros((H, W), dtype=np.int64)
     for j in range(int(np.ceil(H / Hb))):

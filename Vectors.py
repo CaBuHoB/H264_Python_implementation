@@ -2,7 +2,7 @@ import numpy as np
 from numba import jit
 
 
-# @jit(nopython=True, cache=True, parallel=True)
+@jit(nopython=True, cache=True)
 def L1(cur, base, i, j, Hb, Wb, delta_x, delta_y):
     res = 0
     for y in range(Hb):
@@ -13,7 +13,7 @@ def L1(cur, base, i, j, Hb, Wb, delta_x, delta_y):
     return res
 
 
-# @jit(nopython=True, cache=True, parallel=True)
+@jit(nopython=True, cache=True)
 def search_in_R(cur, base, H, W, i, j, dx, dy, 
                 Rx_start, Rx_end, Ry_start, Ry_end, Wb, Hb, wb, hb):
     delta_x = 0
@@ -31,7 +31,7 @@ def search_in_R(cur, base, H, W, i, j, dx, dy,
     return delta_x, delta_y
 
 
-# @jit(nopython=True, cache=True, parallel=True)
+@jit(nopython=True, cache=True)
 def motion_estimation(cur, base, H, W, Hb, Wb, Rx, Ry, dx, dy):
     vectors = np.zeros((int(np.ceil(H / Hb)), int(np.ceil(W / Wb)), 2))
 
